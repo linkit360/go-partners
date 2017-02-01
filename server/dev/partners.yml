@@ -1,0 +1,25 @@
+app_name: partners
+
+server:
+  port: 50311
+  threads_count: 1
+
+service:
+
+consumer:
+  reconnect_delay: 10
+  conn:
+    user: linkit
+    pass: dg-U_oHhy7-
+    host: localhost
+    port: 5672
+
+publisher:
+  pending_buffer_path: /home/centos/linkit/partners_pending.json
+  chan_capacity: 100
+  conn:
+    user: linkit
+    pass: dg-U_oHhy7-
+    host: localhost
+    port: 5672
+
