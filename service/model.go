@@ -10,8 +10,10 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 
 	inmem_client "github.com/vostrok/inmem/rpcclient"
+	inmem_service "github.com/vostrok/inmem/service"
 	"github.com/vostrok/partners/server/src/config"
 	"github.com/vostrok/utils/amqp"
+	"github.com/vostrok/utils/cqr"
 	m "github.com/vostrok/utils/metrics"
 	"github.com/vostrok/utils/rec"
 )
@@ -24,10 +26,12 @@ type EventNotify struct {
 }
 
 type Service struct {
-	notifier *amqp.Notifier
-	db       *sql.DB
-	conf     config.ServiceConfig
-	m        *Metrics
+	conf      config.ServiceConfig
+	dsts      []inmem_service.Destination
+	cqrConfig []cqr.CQRConfig
+	m         *Metrics
+	db        *sql.DB
+	notifier  *amqp.Notifier
 }
 
 type Metrics struct {
@@ -58,6 +62,15 @@ func InitService(
 	if err := inmem_client.Init(inMemConfig); err != nil {
 		log.WithField("error", err.Error()).Fatal("cannot init inmem client")
 	}
+
+	// reload
+	reloadDestinations()
+	go func() {
+		for range time.Tick(time.Duration(10) * time.Minute) {
+			reloadDestinations()
+		}
+	}()
+
 }
 func initMetrics(appName string) *Metrics {
 
