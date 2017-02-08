@@ -24,15 +24,15 @@ type GetDestinationParams struct {
 	OperatorCode int64 `json:"operator_code"`
 }
 
-func GetDestination(p GetDestinationParams) (inmem_service.Destination, error) {
+func GetDestination(p GetDestinationParams) (d inmem_service.Destination, err error) {
 	sCount, err := inmem_client.GetAllRedirectStatCounts()
 	if err != nil {
 		log.WithFields(log.Fields{
 			"error": err.Error(),
 		}).Error("cannot get all stats")
-		return "", err
+		return
 	}
-	for _, d := range svc.dsts {
+	for _, d = range svc.dsts {
 		stat, ok := sCount[d.DestinationId]
 		if !ok {
 			log.WithFields(log.Fields{
@@ -49,6 +49,6 @@ func GetDestination(p GetDestinationParams) (inmem_service.Destination, error) {
 			return d, nil
 		}
 	}
-
-	return inmem_service.Destination{}, fmt.Errorf("Not found: %d", p.CountryCode)
+	err = fmt.Errorf("Not found: %d", p.CountryCode)
+	return
 }

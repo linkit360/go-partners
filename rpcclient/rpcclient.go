@@ -9,9 +9,10 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 
+	inmem_service "github.com/vostrok/inmem/service"
 	"github.com/vostrok/partners/server/src/handlers"
+	partners_service "github.com/vostrok/partners/service"
 	m "github.com/vostrok/utils/metrics"
-	"github.com/vostrok/utils/rec"
 )
 
 // rpc client for "github.com/vostrok/partners/server"
@@ -121,18 +122,12 @@ func call(funcName string, req interface{}, res interface{}) error {
 	return nil
 }
 
-func GetUrlByRec(r rec.Record) (url string, err error) {
-	var url string
-	err = call(
+func GetDestination(p partners_service.GetDestinationParams) (inmem_service.Destination, error) {
+	var d inmem_service.Destination
+	err := call(
 		"Operator.ByCode",
-		handlers.GetByRecordParams{Record: r},
-		&url,
+		p,
+		&d,
 	)
-	if url == "" {
-		errNotFound(r.Tid) // count errors
-		url = cli.conf.DefaultUrl
-		return
-	}
-
-	return "", err
+	return d, err
 }

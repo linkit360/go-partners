@@ -1,9 +1,9 @@
 package main
 
 import (
-	src "github.com/vostrok/partners/src/server"
+	src "github.com/vostrok/partners/server/src"
 )
 
 func main() {
-	src.RunServer()
+	src.Run()
 }

@@ -15,12 +15,12 @@ import (
 )
 
 type AppConfig struct {
-	AppName   string                       `yaml:"app_name"`
-	Server    ServerConfig                 `yaml:"server"`
-	Service   ServiceConfig                `yaml:"service"`
-	InMem     inmem_client.RPCClientConfig `yaml:"inmem"`
-	DB        db.DataBaseConfig            `yaml:"db"`
-	Publisher amqp.NotifierConfig          `yaml:"notifier"`
+	AppName  string                       `yaml:"app_name"`
+	Server   ServerConfig                 `yaml:"server"`
+	Service  ServiceConfig                `yaml:"service"`
+	InMem    inmem_client.RPCClientConfig `yaml:"inmem"`
+	DB       db.DataBaseConfig            `yaml:"db"`
+	Notifier amqp.NotifierConfig          `yaml:"notifier"`
 }
 
 type ServiceConfig struct {
@@ -31,7 +31,8 @@ type QueuesConfig struct {
 	NewHitNotify string `yaml:"hits"`
 }
 type ServerConfig struct {
-	Port string `default:"50311"`
+	HTTPPort string `yaml:"http_port" default:"50311"`
+	RPCPort  string `yaml:"rpc_port" default:"50312"`
 }
 
 func LoadConfig() AppConfig {
@@ -51,8 +52,8 @@ func LoadConfig() AppConfig {
 	if strings.Contains(appConfig.AppName, "-") {
 		log.Fatal("app_name must be without '-' : it's not a valid metric name")
 	}
-	appConfig.Server.Port = envString("PORT", appConfig.Server.Port)
-	appConfig.Publisher.Conn.Host = envString("RBMQ_HOST", appConfig.Publisher.Conn.Host)
+	appConfig.Server.HTTPPort = envString("PORT", appConfig.Server.HTTPPort)
+	appConfig.Notifier.Conn.Host = envString("RBMQ_HOST", appConfig.Notifier.Conn.Host)
 
 	log.WithField("config", fmt.Sprintf("%#v", appConfig)).Info("Config loaded")
 	return appConfig

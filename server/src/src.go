@@ -1,23 +1,27 @@
 package src
 
 import (
+	"net"
+	"net/rpc"
+	"net/rpc/jsonrpc"
 	"runtime"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 
-	"github.com/vostrok/partners/src/server/config"
-	"github.com/vostrok/partners/src/service"
+	"github.com/vostrok/partners/server/src/config"
+	"github.com/vostrok/partners/server/src/handlers"
+	"github.com/vostrok/partners/service"
 	m "github.com/vostrok/utils/metrics"
 )
 
-func RunServer() {
+func Run() {
 	appConfig := config.LoadConfig()
 
-	service.InitService(
+	service.Init(
 		appConfig.AppName,
 		appConfig.Service,
-		appConfig.Publisher,
+		appConfig.Notifier,
 		appConfig.InMem,
 	)
 
@@ -25,21 +29,36 @@ func RunServer() {
 	runtime.GOMAXPROCS(nuCPU)
 	log.WithField("CPUCount", nuCPU)
 
+	go runGin(appConfig)
+	runRPC(appConfig)
+}
+
+func runGin(appConfig config.AppConfig) {
 	r := gin.New()
 	m.AddHandler(r)
 
-	r.NoRoute(notFound)
-
-	r.Run(":" + appConfig.Server.Port)
-
-	log.WithField("port", appConfig.Server.Port).Info("init")
+	r.Run(":" + appConfig.Server.HTTPPort)
+	log.WithField("port", appConfig.Server.HTTPPort).Info("service port")
 }
 
-func notFound(c *gin.Context) {
-	log.WithFields(log.Fields{
-		"method": c.Request.Method,
-		"path":   c.Request.URL.Path,
-		"req":    c.Request.URL.RawQuery,
-	}).Info("404notfound")
-	c.JSON(200, struct{}{})
+func runRPC(appConfig config.AppConfig) {
+
+	l, err := net.Listen("tcp", "127.0.0.1:"+appConfig.Server.RPCPort)
+	if err != nil {
+		log.Fatal("netListen ", err.Error())
+	} else {
+		log.WithField("port", appConfig.Server.RPCPort).Info("rpc port")
+	}
+
+	server := rpc.NewServer()
+	server.HandleHTTP(rpc.DefaultRPCPath, rpc.DefaultDebugPath)
+	server.RegisterName("Destination", &handlers.Destination{})
+
+	for {
+		if conn, err := l.Accept(); err == nil {
+			go server.ServeCodec(jsonrpc.NewServerCodec(conn))
+		} else {
+			log.WithField("error", err.Error()).Error("accept")
+		}
+	}
 }

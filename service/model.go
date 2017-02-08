@@ -2,8 +2,6 @@ package service
 
 import (
 	"database/sql"
-	"encoding/json"
-	"fmt"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -15,15 +13,9 @@ import (
 	"github.com/vostrok/utils/amqp"
 	"github.com/vostrok/utils/cqr"
 	m "github.com/vostrok/utils/metrics"
-	"github.com/vostrok/utils/rec"
 )
 
 var svc Service
-
-type EventNotify struct {
-	EventName string          `json:"event_name,omitempty"`
-	EventData NewHitNotifyMsg `json:"event_data,omitempty"`
-}
 
 type Service struct {
 	conf      config.ServiceConfig
@@ -40,15 +32,22 @@ type Metrics struct {
 	HitDuration prometheus.Summary
 }
 
-type NewHitNotifyMsg struct {
-	R            rec.Record `yaml:"record"`
-	Referer      string     `yaml:"referer"`
-	Url          string     `yaml:"url"`
-	ResponseCode int        `yaml:"response_code"`
-	HitAt        time.Time  `yaml:"hit_at"`
+type DestinationHit struct {
+	DestinationHitId int64     `json:"id"`
+	PartnerId        int64     `json:"partner_id"`
+	DestinationId    int64     `json:"destination_id"`
+	PricePerHit      float64   `json:"price_per_hit,omitempty"`
+	Tid              string    `json:"tid"`
+	CreatedAt        time.Time `json:"cerated_at"`
+	SentAt           time.Time `json:"sent_at"`
+	Destination      string    `json:"destination"`
+	Msisdn           string    `json:"msisdn"`
+	OperatorCode     int64     `json:"operator_code"`
+	CountryCode      int64     `json:"country_code"`
+	ResponseCode     int       `json:"response_code"`
 }
 
-func InitService(
+func Init(
 	appName string,
 	serviceConfig config.ServiceConfig,
 	notifierConfig amqp.NotifierConfig,
@@ -87,21 +86,4 @@ func initMetrics(appName string) *Metrics {
 		}
 	}()
 	return appM
-}
-
-func (svc *Service) newHitNotify(msg NewHitNotifyMsg) error {
-	if msg.HitAt.IsZero() {
-		msg.HitAt = time.Now().UTC()
-	}
-
-	event := EventNotify{
-		EventName: svc.conf.Queues.NewHitNotify,
-		EventData: msg,
-	}
-	body, err := json.Marshal(event)
-	if err != nil {
-		return fmt.Errorf("json.Marshal: %s", err.Error())
-	}
-	svc.notifier.Publish(amqp.AMQPMessage{svc.conf.Queues.NewHitNotify, uint8(1), body})
-	return nil
 }
