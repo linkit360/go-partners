@@ -29,6 +29,7 @@ type Client struct {
 	m          *Metrics
 }
 type RPCClientConfig struct {
+	Enabled bool   `yaml:"enabled"`
 	DSN     string `default:":50312" yaml:"dsn"`
 	Timeout int    `default:"10" yaml:"timeout"`
 }
@@ -55,6 +56,9 @@ func initMetrics() *Metrics {
 	return m
 }
 func Init(clientConf RPCClientConfig) error {
+	if !clientConf.Enabled {
+		return nil
+	}
 	var err error
 	cli = &Client{
 		conf: clientConf,
