@@ -1,8 +1,8 @@
 app_name: partners
 
 server:
-  port: 50311
-  threads_count: 1
+  http_port: 50311
+  rpc_port: 50312
 
 service:
 
@@ -14,7 +14,7 @@ consumer:
     host: localhost
     port: 5672
 
-publisher:
+notifier:
   pending_buffer_path: /home/centos/linkit/partners_pending.json
   chan_capacity: 100
   conn:

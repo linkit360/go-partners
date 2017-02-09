@@ -10,7 +10,6 @@ import (
 	log "github.com/Sirupsen/logrus"
 
 	inmem_service "github.com/vostrok/inmem/service"
-	"github.com/vostrok/partners/server/src/handlers"
 	partners_service "github.com/vostrok/partners/service"
 	m "github.com/vostrok/utils/metrics"
 )
@@ -30,10 +29,10 @@ type Client struct {
 	m          *Metrics
 }
 type RPCClientConfig struct {
-	DSN        string `default:":50311" yaml:"dsn"`
-	Timeout    int    `default:"10" yaml:"timeout"`
-	DefaultUrl string `default:"http://id.slypee.com" yaml:"default_url"`
+	DSN     string `default:":50312" yaml:"dsn"`
+	Timeout int    `default:"10" yaml:"timeout"`
 }
+
 type Metrics struct {
 	RPCConnectError m.Gauge
 	RPCSuccess      m.Gauge
@@ -125,7 +124,7 @@ func call(funcName string, req interface{}, res interface{}) error {
 func GetDestination(p partners_service.GetDestinationParams) (inmem_service.Destination, error) {
 	var d inmem_service.Destination
 	err := call(
-		"Operator.ByCode",
+		"Destination.Get",
 		p,
 		&d,
 	)

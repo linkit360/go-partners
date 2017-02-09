@@ -27,9 +27,9 @@ type Service struct {
 }
 
 type Metrics struct {
-	Success     m.Gauge
-	Errors      m.Gauge
-	HitDuration prometheus.Summary
+	Success                m.Gauge
+	Errors                 m.Gauge
+	GetDestinationDuration prometheus.Summary
 }
 
 type DestinationHit struct {
@@ -74,9 +74,9 @@ func Init(
 func initMetrics(appName string) *Metrics {
 
 	appM := &Metrics{
-		Success:     m.NewGauge("", "", "success", "success"),
-		Errors:      m.NewGauge("", "", "errors", "errors"),
-		HitDuration: m.NewSummary(appName+"_hit_duration_seconds", "hit duration seconds"),
+		Success:                m.NewGauge("", "", "success", "success"),
+		Errors:                 m.NewGauge("", "", "errors", "errors"),
+		GetDestinationDuration: m.NewSummary(appName+"_get_destination_duration_seconds", "hit duration seconds"),
 	}
 
 	go func() {
