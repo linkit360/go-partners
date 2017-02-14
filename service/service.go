@@ -51,9 +51,10 @@ func GetDestination(p GetDestinationParams) (d inmem_service.Destination, err er
 	}
 	for _, d = range svc.dsts {
 		log.WithFields(log.Fields{
-			"dest_id":    d.DestinationId,
-			"partner_id": d.PartnerId,
-			"url":        d.Destination,
+			"dest_id":      d.DestinationId,
+			"partner_id":   d.PartnerId,
+			"country_code": d.CountryCode,
+			"url":          d.Destination,
 		}).Debug("considering..")
 
 		// if not found in stat
@@ -83,7 +84,6 @@ func GetDestination(p GetDestinationParams) (d inmem_service.Destination, err er
 				"limit_check":   (stat.Count < d.AmountLimit),
 			}).Debug("not passed")
 		}
-
 	}
 	err = fmt.Errorf("Destination for country %d not found", p.CountryCode)
 	log.WithFields(log.Fields{
