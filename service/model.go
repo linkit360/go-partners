@@ -51,7 +51,7 @@ func Init(
 	appName string,
 	serviceConfig config.ServiceConfig,
 	notifierConfig amqp.NotifierConfig,
-	inMemConfig inmem_client.RPCClientConfig,
+	inMemConfig inmem_client.ClientConfig,
 ) {
 	log.SetLevel(log.DebugLevel)
 	svc.conf = serviceConfig

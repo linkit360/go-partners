@@ -15,12 +15,12 @@ import (
 )
 
 type AppConfig struct {
-	AppName  string                       `yaml:"app_name"`
-	Server   ServerConfig                 `yaml:"server"`
-	Service  ServiceConfig                `yaml:"service"`
-	InMem    inmem_client.RPCClientConfig `yaml:"inmem"`
-	DB       db.DataBaseConfig            `yaml:"db"`
-	Notifier amqp.NotifierConfig          `yaml:"notifier"`
+	AppName  string                    `yaml:"app_name"`
+	Server   ServerConfig              `yaml:"server"`
+	Service  ServiceConfig             `yaml:"service"`
+	InMem    inmem_client.ClientConfig `yaml:"inmem"`
+	DB       db.DataBaseConfig         `yaml:"db"`
+	Notifier amqp.NotifierConfig       `yaml:"notifier"`
 }
 
 type ServiceConfig struct {
