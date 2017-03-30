@@ -1,14 +1,13 @@
 package rpcclient
 
 import (
-	"fmt"
 	"testing"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 
-	inmem_service "github.com/vostrok/inmem/service"
-	partners_service "github.com/vostrok/partners/service"
+	inmem_service "github.com/linkit360/go-inmem/service"
+	partners_service "github.com/linkit360/go-partners/service"
 )
 
 func init() {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	src "github.com/vostrok/partners/server/src"
+	src "github.com/linkit360/go-partners/server/src"
 )
 
 func main() {

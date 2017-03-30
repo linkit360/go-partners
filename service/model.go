@@ -7,12 +7,12 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/prometheus/client_golang/prometheus"
 
-	inmem_client "github.com/vostrok/inmem/rpcclient"
-	inmem_service "github.com/vostrok/inmem/service"
-	"github.com/vostrok/partners/server/src/config"
-	"github.com/vostrok/utils/amqp"
-	"github.com/vostrok/utils/cqr"
-	m "github.com/vostrok/utils/metrics"
+	inmem_client "github.com/linkit360/go-inmem/rpcclient"
+	inmem_service "github.com/linkit360/go-inmem/service"
+	"github.com/linkit360/go-partners/server/src/config"
+	"github.com/linkit360/go-utils/amqp"
+	"github.com/linkit360/go-utils/cqr"
+	m "github.com/linkit360/go-utils/metrics"
 )
 
 var svc Service

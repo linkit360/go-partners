@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	inmem_service "github.com/vostrok/inmem/service"
-	"github.com/vostrok/partners/service"
+	inmem_service "github.com/linkit360/go-inmem/service"
+	"github.com/linkit360/go-partners/service"
 )
 
 type Destination struct{}

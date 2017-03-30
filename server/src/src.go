@@ -9,10 +9,10 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 
-	"github.com/vostrok/partners/server/src/config"
-	"github.com/vostrok/partners/server/src/handlers"
-	"github.com/vostrok/partners/service"
-	m "github.com/vostrok/utils/metrics"
+	"github.com/linkit360/go-partners/server/src/config"
+	"github.com/linkit360/go-partners/server/src/handlers"
+	"github.com/linkit360/go-partners/service"
+	m "github.com/linkit360/go-utils/metrics"
 )
 
 func Run() {
