@@ -7,8 +7,8 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/prometheus/client_golang/prometheus"
 
-	inmem_client "github.com/linkit360/go-inmem/rpcclient"
-	inmem_service "github.com/linkit360/go-inmem/service"
+	mid_client "github.com/linkit360/go-mid/rpcclient"
+	mid_service "github.com/linkit360/go-mid/service"
 	"github.com/linkit360/go-partners/server/src/config"
 	"github.com/linkit360/go-utils/amqp"
 	"github.com/linkit360/go-utils/cqr"
@@ -19,7 +19,7 @@ var svc Service
 
 type Service struct {
 	conf      config.ServiceConfig
-	dsts      []inmem_service.Destination
+	dsts      []mid_service.Destination
 	cqrConfig []cqr.CQRConfig
 	m         *Metrics
 	db        *sql.DB
@@ -51,15 +51,15 @@ func Init(
 	appName string,
 	serviceConfig config.ServiceConfig,
 	notifierConfig amqp.NotifierConfig,
-	inMemConfig inmem_client.ClientConfig,
+	midConfig mid_client.ClientConfig,
 ) {
 	log.SetLevel(log.DebugLevel)
 	svc.conf = serviceConfig
 	svc.notifier = amqp.NewNotifier(notifierConfig)
 	svc.m = initMetrics(appName)
 
-	if err := inmem_client.Init(inMemConfig); err != nil {
-		log.WithField("error", err.Error()).Fatal("cannot init inmem client")
+	if err := mid_client.Init(midConfig); err != nil {
+		log.WithField("error", err.Error()).Fatal("cannot init mid client")
 	}
 
 	// reload

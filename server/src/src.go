@@ -22,7 +22,7 @@ func Run() {
 		appConfig.AppName,
 		appConfig.Service,
 		appConfig.Notifier,
-		appConfig.InMem,
+		appConfig.Mid,
 	)
 
 	nuCPU := runtime.NumCPU()

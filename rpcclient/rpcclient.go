@@ -9,7 +9,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 
-	inmem_service "github.com/linkit360/go-inmem/service"
+	mid_service "github.com/linkit360/go-mid/service"
 	partners_service "github.com/linkit360/go-partners/service"
 	m "github.com/linkit360/go-utils/metrics"
 )
@@ -125,8 +125,8 @@ func call(funcName string, req interface{}, res interface{}) error {
 	return nil
 }
 
-func GetDestination(p partners_service.GetDestinationParams) (inmem_service.Destination, error) {
-	var d inmem_service.Destination
+func GetDestination(p partners_service.GetDestinationParams) (mid_service.Destination, error) {
+	var d mid_service.Destination
 	err := call(
 		"Destination.Get",
 		p,

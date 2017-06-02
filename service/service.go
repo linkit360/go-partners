@@ -6,12 +6,12 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 
-	inmem_client "github.com/linkit360/go-inmem/rpcclient"
-	inmem_service "github.com/linkit360/go-inmem/service"
+	mid_client "github.com/linkit360/go-mid/rpcclient"
+	mid_service "github.com/linkit360/go-mid/service"
 )
 
 func reloadDestinations() {
-	dd, err := inmem_client.GetAllDestinations()
+	dd, err := mid_client.GetAllDestinations()
 	if err != nil {
 		log.WithFields(log.Fields{
 			"error": err.Error(),
@@ -28,7 +28,7 @@ type GetDestinationParams struct {
 	OperatorCode int64 `json:"operator_code"`
 }
 
-func GetDestination(p GetDestinationParams) (d inmem_service.Destination, err error) {
+func GetDestination(p GetDestinationParams) (d mid_service.Destination, err error) {
 	begin := time.Now()
 	log.WithFields(log.Fields{
 		"country_code":  p.CountryCode,
@@ -42,7 +42,7 @@ func GetDestination(p GetDestinationParams) (d inmem_service.Destination, err er
 			svc.m.Errors.Inc()
 		}
 	}()
-	sCount, err := inmem_client.GetAllRedirectStatCounts()
+	sCount, err := mid_client.GetAllRedirectStatCounts()
 	if err != nil {
 		log.WithFields(log.Fields{
 			"error": err.Error(),
@@ -61,7 +61,7 @@ func GetDestination(p GetDestinationParams) (d inmem_service.Destination, err er
 		// then no stats yet and we can  add new
 		stat, _ := sCount[d.DestinationId]
 		if stat == nil {
-			stat = &inmem_service.StatCount{
+			stat = &mid_service.StatCount{
 				DestinationId: d.DestinationId,
 				Count:         0,
 			}

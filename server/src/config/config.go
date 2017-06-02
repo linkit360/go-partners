@@ -9,18 +9,18 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/jinzhu/configor"
 
-	inmem_client "github.com/linkit360/go-inmem/rpcclient"
+	mid_client "github.com/linkit360/go-mid/rpcclient"
 	"github.com/linkit360/go-utils/amqp"
 	"github.com/linkit360/go-utils/db"
 )
 
 type AppConfig struct {
-	AppName  string                    `yaml:"app_name"`
-	Server   ServerConfig              `yaml:"server"`
-	Service  ServiceConfig             `yaml:"service"`
-	InMem    inmem_client.ClientConfig `yaml:"inmem"`
-	DB       db.DataBaseConfig         `yaml:"db"`
-	Notifier amqp.NotifierConfig       `yaml:"notifier"`
+	AppName  string                  `yaml:"app_name"`
+	Server   ServerConfig            `yaml:"server"`
+	Service  ServiceConfig           `yaml:"service"`
+	Mid      mid_client.ClientConfig `yaml:"mid_client"`
+	DB       db.DataBaseConfig       `yaml:"db"`
+	Notifier amqp.NotifierConfig     `yaml:"notifier"`
 }
 
 type ServiceConfig struct {

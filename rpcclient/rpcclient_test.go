@@ -6,7 +6,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 
-	inmem_service "github.com/linkit360/go-inmem/service"
+	mid_service "github.com/linkit360/go-mid/service"
 	partners_service "github.com/linkit360/go-partners/service"
 )
 
@@ -34,7 +34,7 @@ func TestGetUrlByRec(t *testing.T) {
 	assert.Nil(t, err, "no error on ok country")
 	//fmt.Printf("%#v %#v", res, err)
 
-	expected := inmem_service.Destination{
+	expected := mid_service.Destination{
 		DestinationId: 1,
 		PartnerId:     1,
 		AmountLimit:   0x3,
