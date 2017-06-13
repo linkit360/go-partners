@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 
 	mid_client "github.com/linkit360/go-mid/rpcclient"
 	mid_service "github.com/linkit360/go-mid/service"

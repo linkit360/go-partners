@@ -7,7 +7,7 @@ import (
 	"net/rpc/jsonrpc"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 
 	mid_service "github.com/linkit360/go-mid/service"
 	partners_service "github.com/linkit360/go-partners/service"

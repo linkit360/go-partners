@@ -6,8 +6,8 @@ import (
 	"net/rpc/jsonrpc"
 	"runtime"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/linkit360/go-partners/server/src/config"
 	"github.com/linkit360/go-partners/server/src/handlers"
