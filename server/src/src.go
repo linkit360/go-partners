@@ -37,8 +37,8 @@ func runGin(appConfig config.AppConfig) {
 	r := gin.New()
 	m.AddHandler(r)
 
-	r.Run(":" + appConfig.Server.HTTPPort)
-	log.WithField("port", appConfig.Server.HTTPPort).Info("service port")
+	r.Run(appConfig.Server.Host + ":" + appConfig.Server.HTTPPort)
+	log.WithField("dsn", appConfig.Server.Host+":"+appConfig.Server.HTTPPort).Info("init")
 }
 
 func runRPC(appConfig config.AppConfig) {

@@ -31,6 +31,7 @@ type QueuesConfig struct {
 	NewHitNotify string `yaml:"hits"`
 }
 type ServerConfig struct {
+	Host     string `default:"127.0.0.1" yaml:"host"`
 	HTTPPort string `yaml:"http_port" default:"50311"`
 	RPCPort  string `yaml:"rpc_port" default:"50312"`
 }
